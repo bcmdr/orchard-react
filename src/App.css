@@ -56,21 +56,19 @@ p, h1, h2 {
   padding: 1.5rem 1.5rem;
 }
 
-.GoalItem:nth-child(n + 1) header {
+.GoalItem:nth-child(n+1) header {
   background: #FF9999;
 }
-
-.GoalItem:nth-child(n + 2) header {
+.GoalItem:nth-child(2n+1) header {
   background: #FFD699;
 }
-.GoalItem:nth-child(n + 3) header {
+.GoalItem:nth-child(3n+1) header {
   background: #99FFA3;
 }
-.GoalItem:nth-child(n + 4) header {
+.GoalItem:nth-child(4n+1) header {
   background: #99F3FF;
 }
-
-.GoalItem:nth-child(n + 5) header {
+.GoalItem:nth-child(5n+1) header {
   background: #F2B1FD;
 }
 
@@ -108,6 +106,7 @@ p, h1, h2 {
   border: 1px solid #111;
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
+  margin-left: 1rem;
 }
 
 .NewGoalModal {
