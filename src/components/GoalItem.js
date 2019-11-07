@@ -9,14 +9,14 @@ export default function GoalItem(props) {
           <button 
             className="App-button" 
             data-index={props.index} 
-            onClick={(event) => props.handleDone(event)}>
+            onClick={props.handleDone}>
               Done</button>
         </div>
       </header>
       <footer>
         <p>Streak: {props.streak} Day{props.streak !== 1 ? 's' : ''}</p>
         <div>
-          <button>Edit</button>
+          <button data-index={props.index} onClick={props.handleRemove}>Remove</button>
         </div>
       </footer>
     </article>

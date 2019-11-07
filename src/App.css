@@ -113,7 +113,6 @@ p, h1, h2 {
 .NewGoalModal {
   margin-top: 1rem;
   background: white;
-  overflow: scroll;
 }
 
 .NewGoalModal form {

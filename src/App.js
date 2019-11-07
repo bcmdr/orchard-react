@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isToday } from 'date-fns';
 import './App.css';
 import GoalList from './components/GoalList'
 import NewGoalModal from './components/NewGoalModal'
@@ -23,10 +24,13 @@ function App() {
     setGoalList([...goalList, {
       title: newGoalTitle,
       streak: 0, 
-      done: false
+      done: false,
+      lastDone: null,
+      nextDone: null,
     }]);
     localStorage.setItem('goalList', JSON.stringify(goalList))
     setFormShown(false);
+    setNewGoalTitle("");
   }
 
   function handleNewGoalTitle(event) {
@@ -36,7 +40,24 @@ function App() {
   function handleDone(event) {
     const id = event.target.dataset.index;
     let newGoalList = [...goalList];
+
     newGoalList[id].done = !goalList[id].done;
+
+    if (!isToday(newGoalList[id].lastDone) && newGoalList[id].done) {
+      newGoalList[id].streak += 1;
+      newGoalList[id].nextDone = new Date();
+    } else if (isToday(newGoalList[id].nextDone) && !newGoalList[id].done) {
+      newGoalList[id].streak -= 1;
+      newGoalList[id].nextDone = newGoalList[id].lastDone;
+    }
+
+    setGoalList(newGoalList);
+  }
+
+  function handleRemove(event) {
+    const id = event.target.dataset.index;
+    let newGoalList = [...goalList];
+    newGoalList.splice(id, 1);
     setGoalList(newGoalList);
   }
 
@@ -51,11 +72,15 @@ function App() {
         </section>
         <NewGoalModal 
           shown={formShown} 
+          title={newGoalTitle}
           handleChange={handleNewGoalTitle} 
           handleSubmit={handleNewGoalSubmit}></NewGoalModal>
       </header>
       <main>
-        <GoalList items={goalList} handleDone={handleDone}></GoalList>
+        <GoalList 
+          items={goalList} 
+          handleDone={handleDone}
+          handleRemove={handleRemove}></GoalList>
       </main>
     </div>
   );

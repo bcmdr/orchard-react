@@ -12,6 +12,7 @@ export default function GoalList(props) {
           streak={goalItem.streak}
           done={goalItem.done}
           handleDone={props.handleDone}
+          handleRemove={props.handleRemove}
         ></GoalItem>
       ))}
     </div>
