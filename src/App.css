@@ -103,6 +103,13 @@ p, h1, h2 {
   padding: 1rem 1.5rem;
 }
 
+.GoalItem footer button {
+  background: none;
+  border: 1px solid #111;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
 .NewGoalModal {
   margin-top: 1rem;
   background: white;
@@ -131,7 +138,7 @@ p, h1, h2 {
   color: white;
   background: #111;
   padding: 0.5rem 1rem;
-  /* border: 1px solid #111; */
+  border: 1px solid #111;
 }
 
 .displayNone {

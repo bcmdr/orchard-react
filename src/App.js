@@ -1,88 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-
-function GoalItem(props) {
-  return(
-    <article className={'GoalItem ' + (props.done ? 'done' : '')}>
-      <header>
-        <h2>{props.title}</h2>
-        <div>
-          <button 
-            className="App-button" 
-            data-index={props.index} 
-            onClick={(event) => props.handleDone(event)}>
-              Done</button>
-        </div>
-      </header>
-      <footer>
-        <p>Streak: {props.streak} Day{props.streak !== 1 ? 's' : ''}</p>
-        <div>
-          <button>Edit</button>
-        </div>
-      </footer>
-    </article>
-  )
-}
-
-function GoalList(props) {
-  return (
-    <div className="GoalList">
-      {props.items.map((goalItem, index) => (
-        <GoalItem 
-          key={index}
-          index={index} 
-          title={goalItem.title}
-          streak={goalItem.streak}
-          done={goalItem.done}
-          handleDone={props.handleDone}
-        ></GoalItem>
-      ))}
-    </div>
-  ) 
-}
-
-function NewGoalModal(props) {
-  return (
-    <section className={"NewGoalModal" + (props.shown ? '' : ' displayNone')}>
-      <form onSubmit={props.handleSubmit}>
-          <label htmlFor="title">Goal Title</label>
-          <input id="title" placeholder="New Goal..."></input>
-          <button className="App-button" onClick={props.handleSubmit}>Add</button>
-      </form>
-    </section>
-  )
-}
+import GoalList from './components/GoalList'
+import NewGoalModal from './components/NewGoalModal'
 
 function App() {
-  const [goalList, setGoalList] = useState([])
+  const [newGoalTitle, setNewGoalTitle] = useState("")
+  const [goalList, setGoalList] = useState(
+    localStorage.getItem('goalList') ? JSON.parse(localStorage.getItem('goalList')) : []
+  );
   const [formShown, setFormShown] = useState(false)
 
   useEffect(() => {
-    setGoalList([
-      {
-        title: 'Do 10 Pushups',
-        streak: 0,
-        done: false
-      },
-      {
-        title: 'Read for 30 Minutes',
-        streak: 0,
-        done: false
-      },
-      {
-        title: 'Meditate for 20 Minutes',
-        streak: 0,
-        done: true
-      }
-    ])
-  }, [setGoalList]);
+    localStorage.setItem('goalList', JSON.stringify(goalList))
+  }, [goalList])
 
   function toggleNewGoalForm() {
     setFormShown(!formShown);
   }
 
-  function handleNewGoal(event) {
+  function handleNewGoalSubmit(event) {
     event.preventDefault();
+    setGoalList([...goalList, {
+      title: newGoalTitle,
+      streak: 0, 
+      done: false
+    }]);
+    localStorage.setItem('goalList', JSON.stringify(goalList))
+    setFormShown(false);
+  }
+
+  function handleNewGoalTitle(event) {
+    setNewGoalTitle(event.target.value);
   }
 
   function handleDone(event) {
@@ -101,7 +49,10 @@ function App() {
             <button className="App-button" onClick={toggleNewGoalForm}>New Goal</button>
           </div>
         </section>
-        <NewGoalModal shown={formShown} handleSubmit={handleNewGoal}></NewGoalModal>
+        <NewGoalModal 
+          shown={formShown} 
+          handleChange={handleNewGoalTitle} 
+          handleSubmit={handleNewGoalSubmit}></NewGoalModal>
       </header>
       <main>
         <GoalList items={goalList} handleDone={handleDone}></GoalList>
