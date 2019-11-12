@@ -57,19 +57,19 @@ p, h1, h2 {
 }
 
 .GoalItem:nth-child(n+1) header {
-  background: #FF9999;
-}
-.GoalItem:nth-child(2n+1) header {
   background: #FFD699;
 }
-.GoalItem:nth-child(3n+1) header {
+.GoalItem:nth-child(2n+1) header {
   background: #99FFA3;
 }
-.GoalItem:nth-child(4n+1) header {
+.GoalItem:nth-child(3n+1) header {
   background: #99F3FF;
 }
-.GoalItem:nth-child(5n+1) header {
+.GoalItem:nth-child(4n+1) header {
   background: #F2B1FD;
+}
+.GoalItem:nth-child(5n+1) header {
+  background: #FF9999;
 }
 
 .GoalItem.done header h2 {
