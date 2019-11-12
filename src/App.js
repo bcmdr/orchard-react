@@ -10,15 +10,19 @@ function App() {
     localStorage.getItem('goalList') ? JSON.parse(localStorage.getItem('goalList')) : []
   );
   const [lastReset, setLastReset] = useState(
-    localStorage.getItem('lastReset') ? new Date(JSON.parse(localStorage.getItem('lastReset'))) : new Date()
+    localStorage.getItem('lastReset') ? 
+      new Date(JSON.parse(localStorage.getItem('lastReset'))) 
+    : new Date()
   )
-  const [formShown, setFormShown] = useState(false)
+  const [formShown, setFormShown] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('goalList', JSON.stringify(goalList))
   }, [goalList]);
 
   useEffect(() => {
+    console.log(lastReset)
+    localStorage.setItem('lastReset', JSON.stringify(lastReset));
     if (isToday(lastReset)) return
 
     let newGoalList = [...goalList];
