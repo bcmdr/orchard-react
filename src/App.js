@@ -21,14 +21,13 @@ function App() {
   }, [goalList]);
 
   useEffect(() => {
-    console.log(lastReset)
     localStorage.setItem('lastReset', JSON.stringify(lastReset));
     if (isToday(lastReset)) return
 
     let newGoalList = [...goalList];
     newGoalList.forEach((item) => {
       item.done = false;
-    });
+    });consol
     setGoalList(newGoalList);
 
     localStorage.setItem('lastReset', JSON.stringify(new Date()));
