@@ -14,7 +14,7 @@ export default function GoalItem(props) {
         </div>
       </header>
       <footer>
-        <p className="streak">Streak: {props.streak} Day{props.streak !== 1 ? 's' : ''}</p>
+        <p className="streak">{props.streak} Day{props.streak !== 1 ? 's' : ''}</p>
         <div>
           <button data-index={props.index} onClick={props.handleRemove}>Remove</button>
         </div>
