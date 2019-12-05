@@ -20,8 +20,6 @@ function App() {
   }, [goalList]);
 
   useEffect(() => {
-    console.log('setting last reset')
-
     if (isToday(lastReset)) return;
 
     let newGoalList = [...goalList];
