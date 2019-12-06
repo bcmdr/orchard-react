@@ -37,7 +37,7 @@ p, h1, h2 {
 }
 
 .GoalList {
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
   flex-wrap: wrap;
 }

@@ -70,6 +70,9 @@ function App() {
   }
 
   function handleRemove(event) {
+    const confirmed = window.confirm('Are you sure you would like to remove this goal?');
+    if (!confirmed) return;
+
     const id = event.target.dataset.index;
     let newGoalList = [...goalList];
     newGoalList.splice(id, 1);
