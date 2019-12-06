@@ -5,7 +5,6 @@ import GoalList from "./components/GoalList";
 import NewGoalModal from "./components/NewGoalModal";
 
 function App() {
-  // Establish initial state.
   const [newGoalTitle, setNewGoalTitle] = useState("");
 
   const [formShown, setFormShown] = useState(false);
