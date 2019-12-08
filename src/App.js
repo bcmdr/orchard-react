@@ -52,16 +52,19 @@ function App() {
   function handleNewGoalSubmit(event) {
     event.preventDefault();
 
-    // save a new goal into the goal list in local storage.
-    setGoalList([
-      ...goalList,
-      {
-        title: newGoalTitle,
-        streak: 0,
-        done: false
-      }
-    ]);
-    localStorage.setItem("goalList", JSON.stringify(goalList));
+    // Make sure goal title is not empty.
+    if (newGoalTitle) {
+      // save a new goal into the goal list in local storage.
+      setGoalList([
+        ...goalList,
+        {
+          title: newGoalTitle.trim(),
+          streak: 0,
+          done: false
+        }
+      ]);
+      localStorage.setItem("goalList", JSON.stringify(goalList));
+    }
 
     // Hide and reset the 'new goal' input form.
     setFormShown(false);

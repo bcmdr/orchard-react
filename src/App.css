@@ -1,6 +1,12 @@
 :root {
-  --shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.1);
   background: #EEE;
+  --shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.1);
+  --red: #FF9999;
+  --orange: #FFD699;
+  --green: #99FFA3;
+  --blue: #99F3FF;
+  --purple: #F2B1FD;
+
 }
 
 p, h1, h2 {
@@ -57,22 +63,6 @@ p, h1, h2 {
   border-radius: 0.25rem 0.25rem 0 0;
 }
 
-.GoalItem:nth-child(n+1) header {
-  background: #FFD699;
-}
-.GoalItem:nth-child(2n+1) header {
-  background: #99FFA3;
-}
-.GoalItem:nth-child(3n+1) header {
-  background: #99F3FF;
-}
-.GoalItem:nth-child(4n+1) header {
-  background: #F2B1FD;
-}
-.GoalItem:nth-child(5n+1) header {
-  background: #FF9999;
-}
-
 .GoalItem.done header h2 {
   text-decoration: line-through;
   color: #555;
@@ -81,7 +71,6 @@ p, h1, h2 {
 .GoalItem header button {
   background: #111;
   color: white;
-
 }
 
 .GoalItem.done header button {
