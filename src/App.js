@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { isToday, parseISO } from 'date-fns';
+import { isToday } from 'date-fns';
 import './App.css';
 import GoalList from './components/GoalList'
 import NewGoalModal from './components/NewGoalModal'
@@ -9,11 +9,10 @@ function App() {
   const [goalList, setGoalList] = useState(
     localStorage.getItem('goalList') ? JSON.parse(localStorage.getItem('goalList')) : []
   );
-  const [lastReset, setLastReset] = useState(
-    localStorage.getItem('lastReset') ? 
-      new Date(JSON.parse(localStorage.getItem('lastReset'))) 
-    : new Date()
-  )
+  const [lastReset, setLastReset] = useState(() => {
+    const lastReset = localStorage.getItem('lastReset');
+    return lastReset ? new Date(JSON.parse(lastReset)) : new Date();
+  });
   const [formShown, setFormShown] = useState(false);
 
   useEffect(() => {
@@ -21,8 +20,9 @@ function App() {
   }, [goalList]);
 
   useEffect(() => {
-    localStorage.setItem('lastReset', JSON.stringify(lastReset));
-    if (isToday(lastReset)) return
+    console.log('setting last reset')
+
+    if (isToday(lastReset)) return;
 
     let newGoalList = [...goalList];
     newGoalList.forEach((item) => {
@@ -30,8 +30,10 @@ function App() {
     });
     setGoalList(newGoalList);
 
-    localStorage.setItem('lastReset', JSON.stringify(new Date()));
-    setLastReset(new Date());
+    const newLastReset = new Date();
+
+    localStorage.setItem('lastReset', JSON.stringify(newLastReset));
+    setLastReset(newLastReset);
   }, [lastReset, goalList]);
 
   function toggleNewGoalForm() {
@@ -44,10 +46,8 @@ function App() {
       title: newGoalTitle,
       streak: 0, 
       done: false,
-      lastDone: null,
-      nextDone: null,
     }]);
-    localStorage.setItem('goalList', JSON.stringify(goalList))
+    localStorage.setItem('goalList', JSON.stringify(goalList));
     setFormShown(false);
     setNewGoalTitle("");
   }
@@ -60,14 +60,12 @@ function App() {
     const id = event.target.dataset.index;
     let newGoalList = [...goalList];
 
-    newGoalList[id].done = !goalList[id].done;
-
-    if (!isToday(parseISO(newGoalList[id].lastDone)) && newGoalList[id].done) {
-      newGoalList[id].streak += 1;
-      newGoalList[id].nextDone = new Date();
+    if (newGoalList[id].done) {
+      newGoalList[id].done = false;
+      if (isToday(lastReset)) newGoalList[id].streak -= 1;
     } else {
-      newGoalList[id].streak -= 1;
-      newGoalList[id].nextDone = newGoalList[id].lastDone;
+      newGoalList[id].done = true;
+      newGoalList[id].streak += 1;
     }
 
     setGoalList(newGoalList);
