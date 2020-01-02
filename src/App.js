@@ -20,6 +20,7 @@ function App() {
     return lastReset ? new Date(JSON.parse(lastReset)) : new Date();
   });
   const [drake, setDrake] = useState(null)
+  const [colorsUpdated, setColorsUpdated] = useState(localStorage.getItem("colorsUpdated") ? true : false);
   const goalListRef = useRef();
 
   useEffect(() => {
@@ -65,6 +66,28 @@ function App() {
     });
     setDrake(drakeInit);
   }, [drake, goalListRef]);
+
+  useEffect(() => {
+    if (colorsUpdated) return;
+    const colorMap = [
+      "red",
+      "orange",
+      "green",
+      "blue",
+      "purple"
+    ];
+    let newGoalList = [];
+    goalList.forEach((item, index) => {
+      let newItem = item;
+      if (!newItem.color) {
+        newItem.color = colorMap[index % colorMap.length]; 
+      };
+      newGoalList.push(newItem);
+    });
+    setGoalList(newGoalList);
+    setColorsUpdated(true);
+    localStorage.setItem("colorsUpdated", JSON.stringify(true));
+  }, [goalList]);
 
   function toggleNewGoalForm() {
     // Hide or show the 'new goal' input form.
