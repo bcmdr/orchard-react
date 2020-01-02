@@ -49,6 +49,7 @@ function App() {
 
   const listRef = useRef(null);
   useEffect(() => {
+    document.addEventListener('touchmove', e => e.preventDefault(), { passive:false });
     if (drake) return;
     let drakeInit = Dragula([listRef.current]);
     drakeInit.on('drop', (el, target) => {
@@ -87,7 +88,7 @@ function App() {
     setGoalList(newGoalList);
     setColorsUpdated(true);
     localStorage.setItem("colorsUpdated", JSON.stringify(true));
-  }, [goalList]);
+  }, [colorsUpdated, goalList]);
 
   function toggleNewGoalForm() {
     // Hide or show the 'new goal' input form.
