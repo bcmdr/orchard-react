@@ -1,29 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { isToday } from "date-fns";
+import Dragula from 'react-dragula';
 import "./App.css";
+import "./Dragula.css";
 import GoalList from "./components/GoalList";
 import NewGoalModal from "./components/NewGoalModal";
 
 function App() {
   const [newGoalTitle, setNewGoalTitle] = useState("");
-
   const [formShown, setFormShown] = useState(false);
-
   const [goalList, setGoalList] = useState(() => {
     // Get the goal list from local storage, otherwise create an empty one.
     let goalList = localStorage.getItem("goalList");
     return goalList ? JSON.parse(localStorage.getItem("goalList")) : [];
   });
-
   const [lastReset, setLastReset] = useState(() => {
     // Get the last reset date from storage, otherwise set to today.
     const lastReset = localStorage.getItem("lastReset");
     return lastReset ? new Date(JSON.parse(lastReset)) : new Date();
   });
+  const [drake, setDrake] = useState(null)
+  const goalListRef = useRef();
 
   useEffect(() => {
     // Save goal list into local storage.
     localStorage.setItem("goalList", JSON.stringify(goalList));
+    goalListRef.current = goalList;
   }, [goalList]);
 
   useEffect(() => {
@@ -44,6 +46,26 @@ function App() {
     setLastReset(newLastReset);
   }, [lastReset, goalList]);
 
+  const listRef = useRef(null);
+  useEffect(() => {
+    if (drake) return;
+    let drakeInit = Dragula([listRef.current]);
+    drakeInit.on('drop', (el, target) => {
+      let currentGoalList = goalListRef.current;
+      let indices = []
+      let newGoalList = [];
+      for (let i = 0; i < target.children.length; i++) {
+        let child = target.children[i];
+        indices.push(child.dataset.index);
+      }
+      for (let index of indices) {
+        newGoalList.push(currentGoalList[index]);
+      }
+      localStorage.setItem("goalList", JSON.stringify(newGoalList));
+    });
+    setDrake(drakeInit);
+  }, [drake, goalListRef]);
+
   function toggleNewGoalForm() {
     // Hide or show the 'new goal' input form.
     setFormShown(!formShown);
@@ -51,6 +73,14 @@ function App() {
 
   function handleNewGoalSubmit(event) {
     event.preventDefault();
+
+    const colorMap = [
+      "red",
+      "orange",
+      "green",
+      "blue",
+      "purple"
+    ];
 
     // Make sure goal title is not empty.
     if (newGoalTitle) {
@@ -60,7 +90,8 @@ function App() {
         {
           title: newGoalTitle.trim(),
           streak: 0,
-          done: false
+          done: false,
+          color: colorMap[(goalList.length) % (colorMap.length)]
         }
       ]);
       localStorage.setItem("goalList", JSON.stringify(goalList));
@@ -131,6 +162,8 @@ function App() {
       </header>
       <main>
         <GoalList
+          ref={listRef}
+          setGoalList={setGoalList}
           items={goalList}
           handleDone={handleDone}
           handleRemove={handleRemove}
