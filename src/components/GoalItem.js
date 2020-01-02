@@ -11,7 +11,7 @@ export default function GoalItem(props) {
   return (
     <article data-index={props.index} className={"GoalItem " + (props.done ? "done" : "")}>
       <header style={{ backgroundColor: !props.color ? colorMap[props.index % colorMap.length] : `var(--${props.color})` }}>
-        <h2>{props.title}</h2>
+        <h2 className="drag-handle">{props.title}</h2>
         <div>
           <button
             className="App-button"

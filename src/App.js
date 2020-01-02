@@ -21,6 +21,7 @@ function App() {
   });
   const [drake, setDrake] = useState(null)
   const [colorsUpdated, setColorsUpdated] = useState(localStorage.getItem("colorsUpdated") ? true : false);
+  const scrollable = useRef();
   const goalListRef = useRef();
 
   useEffect(() => {
@@ -49,10 +50,19 @@ function App() {
 
   const listRef = useRef(null);
   useEffect(() => {
-    document.addEventListener('touchmove', e => e.preventDefault(), { passive:false });
+    scrollable.current = true;
+    document.addEventListener('touchmove', handleTouchMove, { passive:false });
     if (drake) return;
-    let drakeInit = Dragula([listRef.current]);
+    let drakeInit = Dragula([listRef.current], {
+      moves: (el, source, handle, sibling) => {
+        return handle.classList.contains('drag-handle');
+      }
+    });
+    drakeInit.on('drag', (el, source) => {
+      scrollable.current = false;
+    })
     drakeInit.on('drop', (el, target) => {
+      scrollable.current = true;
       let currentGoalList = goalListRef.current;
       let indices = []
       let newGoalList = [];
@@ -124,6 +134,12 @@ function App() {
     // Hide and reset the 'new goal' input form.
     setFormShown(false);
     setNewGoalTitle("");
+  }
+
+  function handleTouchMove(event) {
+    if (! scrollable.current) {
+      event.preventDefault();
+    }
   }
 
   function handleNewGoalTitle(event) {
