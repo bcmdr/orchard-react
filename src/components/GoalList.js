@@ -3,7 +3,7 @@ import GoalItem from './GoalItem';
 
 function GoalList(props, listRef) {
   return (
-    <div className="GoalList" ref={listRef}>
+    <div className="GoalList width-wrapper justify-center" ref={listRef}>
       {props.items.map((goalItem, index) => ( goalItem &&
         <GoalItem 
           key={index}

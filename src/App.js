@@ -117,19 +117,19 @@ function App() {
     ];
 
     // Make sure goal title is not empty.
-    if (newGoalTitle) {
-      // save a new goal into the goal list in local storage.
-      setGoalList([
-        ...goalList,
-        {
-          title: newGoalTitle.trim(),
-          streak: 0,
-          done: false,
-          color: colorMap[(goalList.length) % (colorMap.length)]
-        }
-      ]);
-      localStorage.setItem("goalList", JSON.stringify(goalList));
-    }
+    if (!newGoalTitle) return
+
+    // save a new goal into the goal list in local storage.
+    setGoalList([
+      ...goalList,
+      {
+        title: newGoalTitle.trim(),
+        streak: 0,
+        done: false,
+        color: colorMap[(goalList.length) % (colorMap.length)]
+      }
+    ]);
+    localStorage.setItem("goalList", JSON.stringify(goalList));
 
     // Hide and reset the 'new goal' input form.
     setFormShown(false);
@@ -185,14 +185,16 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <section className="top-bar">
-          <h1>Daily Goals</h1>
-          <div>
-            <button className="App-button" onClick={toggleNewGoalForm}>
-              New Goal
-            </button>
-          </div>
-        </section>
+        <div className="justify-center">
+          <section className="top-bar width-wrapper justify-space-between">
+            <h1>Daily Goals</h1>
+            <div>
+              <button className="App-button" onClick={toggleNewGoalForm}>
+                New Goal
+              </button>
+            </div>
+          </section>
+        </div>
         <NewGoalModal
           shown={formShown}
           title={newGoalTitle}
@@ -200,7 +202,7 @@ function App() {
           handleSubmit={handleNewGoalSubmit}
         ></NewGoalModal>
       </header>
-      <main>
+      <main className="justify-center">
         <GoalList
           ref={listRef}
           setGoalList={setGoalList}

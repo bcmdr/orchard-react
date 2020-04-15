@@ -6,8 +6,8 @@ export default function NewGoalModal(props) {
     titleInput.current.focus();
   })
   return (
-    <section className={"NewGoalModal" + (props.shown ? '' : ' displayNone')}>
-      <form autoComplete="off" onSubmit={props.handleSubmit}>
+    <section className={"justify-center NewGoalModal" + (props.shown ? '' : ' displayNone')}>
+      <form className="width-wrapper" autoComplete="off" onSubmit={props.handleSubmit}>
           <label htmlFor="title">Goal Title</label>
           <input 
             ref={titleInput}
