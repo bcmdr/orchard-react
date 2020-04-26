@@ -17,7 +17,7 @@ function App() {
   const [lastReset, setLastReset] = useState(() => {
     // Get the last reset date from storage, otherwise set to today.
     const lastReset = localStorage.getItem("lastReset");
-    return lastReset ? new Date(JSON.parse(lastReset)) : new Date();
+    return lastReset ? new Date(JSON.parse(lastReset)) : null;
   });
   const [drake, setDrake] = useState(null)
   const [colorsUpdated, setColorsUpdated] = useState(localStorage.getItem("colorsUpdated") ? true : false);
@@ -31,6 +31,13 @@ function App() {
   }, [goalList]);
 
   useEffect(() => {
+    // Set the last reset time in local storage
+    if (!lastReset) {
+      const newLastReset = new Date();
+      localStorage.setItem("lastReset", JSON.stringify(newLastReset));
+      setLastReset(newLastReset);
+    }
+
     // Check if the goals were reset today.
     if (isToday(lastReset)) return;
 
@@ -46,7 +53,7 @@ function App() {
     const newLastReset = new Date();
     localStorage.setItem("lastReset", JSON.stringify(newLastReset));
     setLastReset(newLastReset);
-  }, [lastReset, goalList]);
+  }, [goalList, lastReset]);
 
   const listRef = useRef(null);
   useEffect(() => {
